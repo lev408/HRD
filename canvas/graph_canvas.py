@@ -6,12 +6,12 @@ from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 
 from windows.star_view import open_star_view_popup
 
-from .stars import Star
+from .stars_class import Star
 
 class GraphCanvas(FigureCanvasQTAgg):
     """
-    Der HRD-Graph mit den anklickbaren Sternen.
-    Muss in einem Graph-Anzeiger embettiert werden, um angezeigt zu werden.
+    Der HRD Graph mit den anklickbaren Sternen.
+    Muss in einem Graph Anzeiger embettiert werden, um angezeigt zu werden.
     """
 
     def __init__(self):
@@ -33,7 +33,7 @@ class GraphCanvas(FigureCanvasQTAgg):
         wega = Star("Wega", 9602, 0.03, "img", "img")
         polarstern = Star("Polarstern", 6900, 0.02, "img", "img")
         sun = Star("Sonne", 5772, -26.74, "img", "img")
-        aldebaran = Star("Aldebaran", 3910, 0.87, "images/SVG_example7.svg", "images/aldebaran-spectrum.png")
+        aldebaran = Star("Aldebaran", 3910, 0.87, "images/test.svg", "images/test.fit")
         beteigeuze = Star("Beteigeuze", 3500, 0.58, "img", "img")
 
         stars_list = np.array([mintaka, rigel, wega, polarstern, sun, aldebaran, beteigeuze])

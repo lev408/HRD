@@ -1,4 +1,4 @@
-"""Startet eine QT-Applikation, um den HRD-Graph zu zeigen."""
+"""Startet eine QT-Applikation, um den HRD Graph zu zeigen."""
 
 import sys
 
@@ -12,7 +12,7 @@ if __name__ == "__main__":
     if not qapp:
         qapp = QApplication(sys.argv)
 
-    # Zeige das Graph-Fenster
+    # Zeige das Graph Fenster
     app = GraphViewWindow(GraphCanvas())
     app.show()
     app.activateWindow()
