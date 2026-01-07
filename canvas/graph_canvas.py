@@ -27,7 +27,7 @@ class GraphCanvas(FigureCanvasQTAgg):
 
     def setup(self):
         """Initialisiert und beschreibt den Graphen."""
-
+        '''
         mintaka = Star("Mintaka", 30000, 0.96, "img", "img")
         rigel = Star("Rigel", 11000, 0.12, "img", "img")
         wega = Star("Wega", 9602, 0.03, "img", "img")
@@ -35,8 +35,20 @@ class GraphCanvas(FigureCanvasQTAgg):
         sun = Star("Sonne", 5772, -26.74, "img", "img")
         aldebaran = Star("Aldebaran", 3910, 0.87, "images/test.svg", "images/test.fit")
         beteigeuze = Star("Beteigeuze", 3500, 0.58, "img", "img")
-
+        
         stars_list = np.array([mintaka, rigel, wega, polarstern, sun, aldebaran, beteigeuze])
+        '''
+
+        alhena = Star("Alhena", 9200, -0.7, "", "")
+        castor = Star("Castor", 10000, 0.59, "", "")
+        deneb = Star("Deneb", 8525, 1.25, "", "")
+        gomeisa = Star("Gomeisa", 11770, 2.89, "", "")
+        kochab = Star("Kochab", 4030, 2.08, "", "")
+        muphrid = Star("Muphrid", 6100, 2.68, "", "")
+        pollux = Star("Pollux", 4200, 1.08, "", "")
+        rhobootes = Star("RhoBootes", 0, 0, "", "")
+
+        stars_list = np.array([alhena, castor, deneb, gomeisa, kochab, muphrid, pollux, rhobootes])
 
         temperatur = np.array([star.temperature for star in stars_list])
         temperatur_x_values = []
