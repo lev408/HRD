@@ -1,11 +1,12 @@
 """Beinhaltet den Sterne-Popup."""
 import matplotlib.pyplot as plt
 from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QSizePolicy
-from PySide6.QtGui import QImage, QPixmap, QResizeEvent
+from PySide6.QtGui import QImage, QPixmap, QResizeEvent, QPainter
 from PySide6.QtSvgWidgets import QSvgWidget
 import numpy as np
 from astropy.io import fits
 from PySide6.QtCore import Qt
+from PySide6.QtSvg import QSvgRenderer
 
 class AspectRatioLabel(QLabel):
     """
@@ -18,6 +19,7 @@ class AspectRatioLabel(QLabel):
         # Wichtig: Erlaubt dem Label, kleiner zu werden als das Bild
         self.setMinimumSize(1, 1)
         # Wir kümmern uns selbst um das Skalieren, daher False
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setScaledContents(False)
         self.setAlignment(Qt.AlignCenter)
 
@@ -64,10 +66,43 @@ class StarViewPopup(QDialog):
         temperature_label = QLabel(f"Temperatur: {temperature}K")
         layout.addWidget(temperature_label)
 
+        def svg_to_pixmap(svg_path: str, width=1000) -> QPixmap:
+            """
+            Lädt ein SVG und rendert es in eine hochauflösende QPixmap.
+            Dadurch können wir es im AspectRatioLabel wie ein normales Bild behandeln.
+            """
+            renderer = QSvgRenderer(svg_path)
+            if not renderer.isValid():
+                return QPixmap()
+
+            # Berechne Höhe basierend auf Seitenverhältnis des SVGs
+            default_size = renderer.defaultSize()
+            height = int(width * (default_size.height() / default_size.width()))
+
+            # Erstelle leere Pixmap mit transparentem Hintergrund
+            pixmap = QPixmap(width, height)
+            pixmap.fill(Qt.transparent)
+
+            # Male das SVG auf die Pixmap
+            painter = QPainter(pixmap)
+            renderer.render(painter)
+            painter.end()
+
+            return pixmap
+
         #diagram_img = QSvgWidget(diagram_img_path)
-        diagram_img = QSvgWidget(f"images/{name}.svg")
-        diagram_img.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        layout.addWidget(diagram_img)
+        #diagram_img = QSvgWidget(f"images/{name}.svg")
+        #diagram_img.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        #layout.addWidget(diagram_img)
+
+        svg_pixmap = svg_to_pixmap(f"images/{name}.svg")
+
+        if not svg_pixmap.isNull():
+            diagram_label = AspectRatioLabel()
+            diagram_label.setPixmap(svg_pixmap)
+            layout.addWidget(diagram_label)
+        else:
+            layout.addWidget(QLabel("Diagramm konnte nicht geladen werden"))
 
         try:
             #hdu_list = fits.open(raw_img_path)
